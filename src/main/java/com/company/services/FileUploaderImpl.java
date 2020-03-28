@@ -1,5 +1,6 @@
 package com.company.services;
 
+import com.company.dto.FileDto;
 import com.company.models.FileInfo;
 import com.company.repositories.FileRepository;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,17 +20,17 @@ public class FileUploaderImpl implements FileUploader {
     }
 
     @Override
-    public void uploadAndSaveToDb(MultipartFile multipartFile) {
+    public FileDto uploadAndSaveToDb(MultipartFile multipartFile) {
         try {
             String type = multipartFile.getContentType();
             Long size = multipartFile.getSize();
             String storageFilename = storageFilenameGenerator.generateStorageFilename();
             String path = directory + "/" + storageFilename + "/" + multipartFile.getOriginalFilename();
             multipartFile.transferTo(new File(path));
-            System.out.println(path);
             fileRepository.save(new FileInfo(storageFilename, multipartFile.getOriginalFilename(), path, size, type));
+            return new FileDto("sh.il.almaz@gmail.com", "anonymous", "localhost:8080/getfile/" + storageFilename, storageFilename, multipartFile.getOriginalFilename(), size, type);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException();
         }
     }
 
