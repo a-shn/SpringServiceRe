@@ -25,7 +25,7 @@ public class UserJdbcTemplateImpl implements UserRepository {
         String email = row.getString("email");
         String password = row.getString("password");
 
-        return new User(login, password, email);
+        return new User(login, email, password);
     };
 
 

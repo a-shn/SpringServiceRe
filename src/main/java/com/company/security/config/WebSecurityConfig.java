@@ -18,7 +18,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Autowired
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -29,17 +28,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests().anyRequest().denyAll();
-//                .antMatchers("/signup").permitAll()
-//                .antMatchers("/signin").permitAll()
-//                .antMatchers("/uploadfiles").authenticated()
-//                .antMatchers("/getfile").authenticated();
-//
-//        http.formLogin()
-//                .loginPage("/signin")
-//                .usernameParameter("email")
-//                .defaultSuccessUrl("/")
-//                .failureUrl("/signin?error")
-//                .permitAll();
+        http.authorizeRequests()
+                .antMatchers("/signup").permitAll()
+                .antMatchers("/signin").permitAll()
+                .antMatchers("/uploadfiles").authenticated()
+                .antMatchers("/getfile").authenticated()
+                .antMatchers("/").authenticated();
+
+        http.formLogin()
+                .loginPage("/signin")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/")
+                .failureUrl("/signin?error")
+                .permitAll();
     }
 }
